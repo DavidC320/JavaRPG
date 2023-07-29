@@ -8,5 +8,4 @@ JavaRPG is a simple game where you control a band of 4 characters as they go on 
 
 To play locate the JavaRPG.java file in src/(default package) or in src
 
-Title Screen.
 ![Screenshot 2023-07-29 193101](https://github.com/DavidC320/JavaRPG/assets/92796937/8df30999-7f1a-4fcf-8b71-60a8ad87a5de)
