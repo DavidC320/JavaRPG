@@ -1,18 +1,17 @@
-package jFX;
+ package jFX;
 import rpgElements.Player;
 import rpgElements.CharacterBase;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 /*
  * David cruz 
  * 7/22/2023
  * */
 
-public class CreateFirstCharacterPane extends BorderPane implements Refresh{
+public class CreateFirstCharacterPane extends JRPGFXPane implements Refresh{
 	private TextField characterName = new TextField(); 
 	private Button enterCharacter = new Button("Create");
 	private Label results = new Label("");
@@ -24,15 +23,13 @@ public class CreateFirstCharacterPane extends BorderPane implements Refresh{
 	private Button continueBtn = new Button("Continue");
 	
 	public CreateFirstCharacterPane(SceneController sceneController, Player player) {
-		Button backBtn = new Button("back");
-		backBtn.setAlignment(Pos.TOP_LEFT);
-		setTop(backBtn);
-		backBtn.setOnAction((e) -> sceneController.setPane("title"));
+		super(sceneController, "Create a character.");
 		
 		VBox createCharacterPane = new VBox(15);
+		createCharacterPane.setAlignment(Pos.CENTER);
 		setCenter(createCharacterPane);
 		
-		
+		continuePanel.setAlignment(Pos.CENTER);
 		createCharacterPane.getChildren().setAll(new Label("Enter the name of your character."), characterName, enterCharacter,
 				continuePanel);
 		
@@ -46,6 +43,7 @@ public class CreateFirstCharacterPane extends BorderPane implements Refresh{
 			characterName.setEditable(false);
 			
 			CharacterBase firstCharacter = new CharacterBase(name);
+			player.setFileName(name);
 			player.addCharacter(firstCharacter);
 			
 			characterInfo.setText(firstCharacter.toString());

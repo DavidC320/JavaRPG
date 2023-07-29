@@ -19,61 +19,69 @@ public class Explore {
 	
 	public static final int MAX_FLOORS = 10;
 	
+	/** creates an explore object */
 	public Explore(Player player) {
 		this.player = player;
 	}
 	
 	// getters
+	/** get how much damage has been dealt */
 	public int getDamageDealt() {
 		return damageDealt;
 	}
 	
+	/** get how many enemies has been defeated */
 	public int getEnemiesDefeated() {
 		return enemiesDefeated;
 	}
 	
+	/** gets the current floor */
 	public int getCurrentFloor() {
 		return currentFloor;
 	}
 	
+	/** gets the max difficulty */
 	public int getMaxDifficulty() {
 		return maxDifficulty;
 	}
 	
+	/** gets the current floor difficulty */
 	public int getCurrentFloorDifficualty() {
 		return currentFloor + exploreDifficulty;
 	}
 	
+	/** gets the enemy's team */
 	public ArrayList<CharacterBase> getEnemyteam(){
 		return enemy.getPartyAsList();
 	}
 	
 	// setters
+	/** sets how much damage has been dealt */
 	public void setDamageDealt(int damage) {
 		this.damageDealt = damage;
 	}
 	
+	/** sets the amount of defeated enemies */
 	public void setDefeatedEnemeis(int enemies) {
 		this.enemiesDefeated = enemies;
 	}
-	
+	/** sets the max difficulty*/
 	public void setMaxDifficulty(int max) {
 		this.maxDifficulty = max;
 	}
 	
+	/** sets the explore difficulty */
 	public void setExploreDifficulty(int difficulty) {
 		this.exploreDifficulty = difficulty;
 	}
 	
 	// methods
-	
-	
 	/** Increment the current floor by 1 */
 	public void incrementFloor() {
 		this.currentFloor++;
 	}
 	
-	/** resets the current floor */
+	/** resets the current expedition */
 	public void resetFloors() {
 		this.currentFloor = 0;
 		this.currentCharactersFound = 0;
@@ -134,24 +142,28 @@ public class Explore {
 			return 0; 
 	}
 	
-	/** a method that allows for two managers to fight */
+	/** have two parties fight a round and return how much damage and how many were defeated by the attacking party */
 	public static int[] attackTeam(CharacterManager attackingManager, CharacterManager defendingManager) {
 		int[] damageDefeated = new int[2];
 		ArrayList<CharacterBase> attackingTeam = attackingManager.getLivingPartyMemebrs();
 		ArrayList<CharacterBase> defendingTeam = defendingManager.getLivingPartyMemebrs();
+		ArrayList<CharacterBase> targets = defendingManager.getPartyAsList();
 		
 		for (CharacterBase character: attackingTeam) {
 			if (!defendingManager.hasLivingPartyMembers())
 				return damageDefeated;
+			
 			// get a random target and attack
 			if (character.currentHealth > 0) {
-				int targetInt = (int)(Math.random() * defendingTeam.size());
+				CharacterBase target = targets.get((int)(Math.random() * defendingTeam.size()));
+				int targetInt = targets.indexOf(target);
 				int damage = character.attackDamage();
 				damageDefeated[0] += damage;
 				defendingTeam.get(targetInt).takeDamage(damage);
 				
 				if (defendingTeam.get(targetInt).getCurrentHealht() == 0)
 					damageDefeated[1]++;
+				
 			defendingTeam = defendingManager.getLivingPartyMemebrs();
 			}
 		}
@@ -179,8 +191,28 @@ public class Explore {
 		return new CharacterBase(getCurrentFloorDifficualty());
 	}
 	
+	/** give a team xp and kills */
+	public void ditributeXPAndEnemies(ArrayList<CharacterBase> team) {
+		double teamSplit = (double)getDamageDealt() / 2 / team.size();
+		int expericeFound = (int) Math.ceil(teamSplit);
+		int enemiesDefeated = getEnemiesDefeated();
+		setDamageDealt(0);
+		setDefeatedEnemeis(0);
+		
+		for (CharacterBase character: player.getPartyAsList()) {// give then xp and defeated enemies
+			character.addDefeatedEnemies(enemiesDefeated);
+			character.addExperience(expericeFound);
+			}
+		
+	}
+	
 	/** a exception if there is no members in a party */
 	public class NoPartyMembers extends Exception{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public NoPartyMembers(String message) {
 			super(message);
 		}

@@ -21,6 +21,7 @@ public class GetNewCharacterPane extends BorderPane implements Refresh{
 
 	public GetNewCharacterPane(SceneController sceneController, Player player, Explore explore) {
 		this.explore = explore;
+		this.setStyle("-fx-background-color: #c5c7a3");
 		
 		VBox controlPanel = new VBox(15);
 		controlPanel.setAlignment(Pos.CENTER);

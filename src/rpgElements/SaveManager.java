@@ -23,16 +23,19 @@ public class SaveManager {
 	private String saveName = "TestGame";
 	final static String SAVEPATH = "SavedGames";
 	
+	/** create a default save manger */
 	public SaveManager() {
 		createSavePathIfNotPresent();
 	}
 	
 	// getters
 	
+	/** get the save game name */
 	public String getSaveName() {
 		return saveName;
 	}
 	
+	/** get the save game path */
 	public String getSaveGamePath() {
 		createSavePathIfNotPresent();
 		return SAVEPATH + "\\" + saveName + ".txt";
@@ -40,12 +43,13 @@ public class SaveManager {
 	
 	// setters
 	
+	/** set the save game name */
 	public void setSaveName(String name) {
 		saveName = name;
 	}
 	
 	
-	/** create the dir path for save games if it doesn't exist */
+	/** create the dictionary path for saved games if it doesn't exist */
 	public void createSavePathIfNotPresent() {
 		// based off of these sources
 		// page 479 intro to java
@@ -82,6 +86,7 @@ public class SaveManager {
 		}
 	}
 	
+	/** saves the game to save game file */
 	public void saveToFile(ArrayList<CharacterBase> list) {
 		try {
 			// so this just overwrites the text file...
@@ -101,6 +106,7 @@ public class SaveManager {
 		
 	}
 	
+	/** loads a game file */
 	public ArrayList<CharacterBase> loadSaveGame() {
 		// based off of 483 listing 12.15
 		ArrayList<CharacterBase> loadedCharacters = new ArrayList<>();

@@ -21,13 +21,16 @@ public class CombatPane extends BorderPane implements Refresh{
 	private Explore explore;
 	
 	public CombatPane(SceneController sceneController, Player player, Explore explore) {
+		this.setStyle("-fx-background-color: #7e8069");
 		this.player = player;
 		this.explore = explore;
 		// display player
 		setLeft(playerPartyBox);
+		playerPartyBox.setStyle("-fx-background-color: #89a888");
 		
 		// display enemy
 		setRight(enemyPartyBox);
+		enemyPartyBox.setStyle("-fx-background-color: #a8888a");
 		
 		// Controls
 		HBox controlPanel = new HBox(15);
@@ -38,6 +41,8 @@ public class CombatPane extends BorderPane implements Refresh{
 		Button fightBtn = new Button("Fight");
 		
 		controlPanel.getChildren().setAll(runBtn, fightBtn);
+		
+		runBtn.setOnAction((e) -> sceneController.setPane("explore results"));
 		
 		fightBtn.setOnAction((e) -> {
 			try {
@@ -64,13 +69,13 @@ public class CombatPane extends BorderPane implements Refresh{
 	public void updateTeams() {
 		playerPartyBox.getChildren().clear();
 		for (CharacterBase character: player.getPartyAsList()) {
-			Label characterLabel = new Label(String.format("%c\nHp: %d / %d", character.getIcon(), character.getCurrentHealht(), character.getMaxHealth()));
+			Label characterLabel = new Label(String.format("%c LV: %d\nHp: %d / %d", character.getIcon(), character.getLevel(), character.getCurrentHealht(), character.getMaxHealth()));
 			playerPartyBox.getChildren().add(characterLabel);
 		}
 		
 		enemyPartyBox.getChildren().clear();
 		for (CharacterBase character: explore.getEnemyteam()) {
-			Label characterLabel = new Label(String.format("%c\nHp: %d / %d", character.getIcon(), character.getCurrentHealht(), character.getMaxHealth()));
+			Label characterLabel = new Label(String.format("%c LV: %d\nHp: %d / %d", character.getIcon(), character.getLevel(), character.getCurrentHealht(), character.getMaxHealth()));
 			enemyPartyBox.getChildren().add(characterLabel);
 		}
 	}

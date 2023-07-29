@@ -31,9 +31,12 @@ public class CharacterBase {
 	// these are here for convenience
 	public final static int MAX_LEVEL = 50;
 	public final static char [] ICONS = {'☺', '☻', '♥', '♦', '♣', '♠'};
+	public final String[] NAMES = {"Ron", "Bob", "John", "Jane", "Margret", "Daniel", "Mimkro", "Viper", "Chumly", "PineApple", "Apple Pie", "Rosy Custard", "Spiffo", "Sabeth", "Kekht", "Leviathan", "Q Master",
+			"Lain", "George", "Woods", "Kenny", "Ragged Johns", "Danny", "Test", "Text", "The Alchemist", "Trikoa", "Mismier", "Toro", "Megan", "Dream C", "Miami"};
 	
 	/** Create a default test character */
 	public CharacterBase() {
+		randomName();
 		randomLevel();
 		levelStatCalculator();
 		rankStatCalculator();
@@ -55,8 +58,8 @@ public class CharacterBase {
 	
 	/** Creates a random character with a level */
 	public CharacterBase(int level) {
-		// random name but for now, Test name
 		this.level = level;
+		randomName();
 		
 		// random icon
 		randomRank();
@@ -85,56 +88,66 @@ public class CharacterBase {
 	}
 	
 	// setters
-	
+	/** Change a character’s name */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
 	// getters
 	
+	/** get how much experience is needed to level up */
 	public int getExperienceThreshold() {
 		return this.leveledExperienceThreshold;
 	}
 	
+	/** get how many enemies need to be defeated to rank up */
 	public int getRankThreshold() {
 		return this.rankedEnemiesThreshold;
 	}
 	
+	/** gets the characters name*/
 	public String getName() {
 		return name;
 	}
 	
+	/** gets the characters rank */
 	public int getRank() {
 		return rank;
 	}
 	
+	/** get the characters icon */
 	public char getIcon() {
 		if (rank > ICONS.length)
 			rank = ICONS.length - 1;
-		// System.out.println("error here: " + rank);
 		return ICONS[rank];
 	}
 	
+	/** get the characters level */
 	public int getLevel() {
 		return level;
 	}
 	
+	/** get the characters experience */
 	public int getExperience() {
 		return currentExperience;
 	}
 	
+	/** get the characters defeated enemy count */
 	public int getDefeatedEnemies() {
 		return defeatedEnemies;
 	}
 	
+	/** get the characters health percent */
 	public int getHealthPercent() {
 		return healthPercent;
 	}
 	
+	/** get the characters attack percent */
 	public int getAttackPercent() {
 		return attackPercent;
 	}
 	
+	/** get the characters critical percent */
 	public int getCriticalPercent() {
 		return criticalPercent;
 	}
@@ -144,13 +157,18 @@ public class CharacterBase {
 		return (rankMaxHealth + leveledMaxHealth);
 	}
 	
+	/** gets the characters current health */
 	public int getCurrentHealht() {
 		return currentHealth;
 	}
 	
-	/** gets the combined value of baseAttack(rank) and leveleAttack*/
+	/** gets the combined value of baseAttack(rank) and leveleAttack..
+	 * IF the character has a attack number lower or equal to 0 then
+	 * the attack is set to 1.
+	 * */
 	public int getAttack() {
-		return (rankAttack + leveledAttack);
+		int attack = rankAttack + leveledAttack;
+		return (attack > 0) ? attack : 1;
 	}
 	
 	/** gets the combined value of baseCriticalChance(rank) and leveldCriticalChance*/
@@ -159,6 +177,11 @@ public class CharacterBase {
 	}
 	
 	// methods
+	
+	/** gives a random name to a character */
+	private void randomName() {
+		name = NAMES[(int)(Math.random() * NAMES.length)];
+	}
 	
 	/** gives the character a random rank */
 	private void randomRank() {
@@ -176,7 +199,7 @@ public class CharacterBase {
 		level = 1 + (int)(Math.random() * MAX_LEVEL);
 	}
 	
-	/** Calculates thresholds */
+	/** creates an array of 3 numbers after calculating the next number using the threshold and calculate a new threshold. */
 	public static Integer[] calculateThreshold(int currentNumber, int threshold, int level, int thresholdOffset, int thresholdMultiplyer, int maxLevel) {
 		if (level < maxLevel){
 			do {
@@ -268,20 +291,23 @@ public class CharacterBase {
 		if (healthRegain + currentHealth > getMaxHealth()) {
 			healthRegain -= healthRegain + currentHealth - getMaxHealth();
 		}
-		healthRegain += currentHealth;
+		currentHealth += healthRegain;
 	}
 	
+	/** gets the amount of damage a character does. If a character’s critical chance lands less than the critical chance then the damage is doubled. */
 	public int attackDamage() {
 		boolean critical = (getCriticalChance() > Math.random() * 101);
 		return getAttack() * (critical ? 0 : 2);
 	}
 	
+	/** takes health away from a character. */
 	public void takeDamage(int damage) {
 		currentHealth -= damage;
 		if (currentHealth < 0)
 			currentHealth = 0;
 	}
 	
+	/** return the character in string form */
 	public String toString() {
 		String characterData = String.format(
 				"%c %s|\n" + 
@@ -293,7 +319,7 @@ public class CharacterBase {
 		return characterData;
 	}
 	
-	// displays all data
+	/** returns a break down of a character */
 	public String toExpansiveString() {
 		String characterData = String.format(
 				"%c %s|\n" + 

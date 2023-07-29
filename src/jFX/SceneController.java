@@ -1,5 +1,4 @@
 package jFX;
-import rpgElements.*;
 import java.util.HashMap;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -21,41 +20,39 @@ public class SceneController {
 	private BorderPane parantPane = new BorderPane();
 	private Stage stage;
 	
-	public SceneController(Stage stage, Player player, Explore explore) {
+	/** creates a sceneController */
+	public SceneController(Stage stage) {
 		this.stage = stage;
 		
 		// set some things up beforehand.
 		Scene scene = new Scene(parantPane, 580, 450);
 		stage.setScene(scene);
-		
-		// add panes to map
-		panes.put("title", new TitlePane(this));
-		panes.put("main menu", new MainMenuPane(this, player));
-		panes.put("collection", new CollectionManagerPane(this, player));
-		panes.put("load game", new LoadGamePane(this, player));
-		panes.put("save game", new SaveGamePane(this, player));
-		panes.put("set explore", new SetExploreLevelPane(this, player, explore));
-		panes.put("first character", new CreateFirstCharacterPane(this, player));
-		panes.put("floor", new ExploreFloorPane(this, player, explore));
-		panes.put("new character", new GetNewCharacterPane(this, player, explore));
-		panes.put("fight", new CombatPane(this, player, explore));
-		panes.put("fight results", new CombatResultsPane(this, player, explore));
-		panes.put("explore results", new ExploreResultsPane(this, player, explore));
 	}
 	
+	/** returns the hash map of the controller */
+	public HashMap<String, Pane> getPanesHashMap(){
+		return panes;
+	}
+	
+	/** changes the pane to a pane within the hash map. if the pane implements refresh then the refresh method in the pane is activated. */
 	public void setPane(String paneName) {
-		System.out.println(paneName);
+		try {
+			
 		Pane pane = panes.get(paneName);
 		
 		// refreshes the pane if it implements the Refresh Instance.
 		// based off of https://www.baeldung.com/java-check-class-implements-interface
 		if (pane instanceof Refresh) {
-			System.out.println("refresh activated");
 			((Refresh) pane).refresh();
 			}
 		
 		parantPane.setCenter(pane);
 		stage.show();
+		}
+		catch (Exception e) {
+			System.out.println(paneName);
+			e.printStackTrace();
+		}
 	}
 }
 

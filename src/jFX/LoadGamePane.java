@@ -1,36 +1,29 @@
 package jFX;
 import rpgElements.Player;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 /*
  * David cruz 
  * 7/22/2023
  * */
 
-public class LoadGamePane extends GridPane implements Refresh{
+public class LoadGamePane extends JRPGFXPane implements Refresh{
 	private TextField saveName = new TextField();
 	private Label result = new Label();
 
 	public LoadGamePane(SceneController sceneController, Player player) {
-		setPadding(new Insets(11, 11, 11, 11));
-		setAlignment(Pos.TOP_CENTER);
+		super(sceneController, "Load Game.");
 		
-		Button backBtn = new Button("back to title");
-		add(backBtn, 0, 0);
-		
-		add(new Label("Load game"), 0, 1);
-		add(saveName, 0, 2);
-		
-		add(result, 0, 3);
-		
+		VBox controls = new VBox(15);
+		controls.setAlignment(Pos.CENTER);
+		setCenter(controls);
 		Button loadGameBtn = new Button("Load Game");
-		add(loadGameBtn, 0, 4);
 		
-		backBtn.setOnAction((e) -> sceneController.setPane("title"));
+		controls.getChildren().addAll(new Label("Enter the name of your save in the save folder. Do not include .txt"), saveName, result, loadGameBtn);
+		
 		loadGameBtn.setOnAction((e) ->{
 			player.setFileName(saveName.getText());
 			if (!player.saveGameExists()) {

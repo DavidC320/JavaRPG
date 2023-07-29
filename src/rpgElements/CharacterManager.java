@@ -10,24 +10,24 @@ abstract class CharacterManager {
 	private ArrayList<CharacterBase> collection = new ArrayList<>();
 	private int[] party = {-1, -1, -1, -1};
 	
-	public CharacterManager() {
-		
-	}
-	
 	// getters
+	/** get a character from the collection using an array */
 	public CharacterBase getCharacterFromCollection(int index) {
 		return collection.get(index);
 	}
 	
+	/** get your party’s index values where -1 is an empty spot */
 	public int[] getParty(){
 		return party;
 	}
 	
+	/** returns the managers collection */
 	public ArrayList<CharacterBase> getCollection(){
 		return collection;
 	}
 	
 	// setters
+	/** replace your current collection with a new collection. */
 	public void setCollection(ArrayList<CharacterBase> newCollection) {
 		this.collection = newCollection;
 	}
@@ -92,7 +92,7 @@ abstract class CharacterManager {
 		
 	}
 	
-	/** generate a default character */
+	/** generate a random character */
 	public CharacterBase generateCharacter() {
 		return new CharacterBase();
 	}
@@ -102,16 +102,17 @@ abstract class CharacterManager {
 		return new CharacterBase(name);
 	}
 	
-	/** generate random with level */
+	/** generate a random character with level */
 	public CharacterBase generateCharacter(int level) {
 		return new CharacterBase(level);
 	}
 	
-	/** removes a character from the collection list */
+	/** adds a character to the collection list */
 	public void addCharacter(CharacterBase character) {
 		collection.add(character);
 	}
 	
+	/** removes a character from the collection list */
 	public void removeCharacter(int index) {
 		int partyIndex = index;
 		collection.remove(index);
@@ -129,7 +130,7 @@ abstract class CharacterManager {
 		}
 	}
 	
-	/** Converts all the party indexes back to 0 */
+	/** empties all the party indexes back to -1 */
 	public void clearParty() {
 		for (int characterIndex = 0; characterIndex < party.length ;characterIndex++) {
 			party[characterIndex] = -1;
@@ -137,14 +138,14 @@ abstract class CharacterManager {
 	}
 	
 	
-	/** clears the collection */
+	/** empties the collection along with the party */
 	public void clearCollection() {
 		collection.clear();
 		clearParty();
 	}
 	
 	
-	/** returns the save data of all the characters in the user collection */
+	/** returns the saved data of all the characters in the user collection */
 	public ArrayList<String> collectionSaveList(){
 		ArrayList<String> saveList = new ArrayList<>();
 		for (CharacterBase character: collection) {
@@ -155,8 +156,8 @@ abstract class CharacterManager {
 	
 	/** mass heal your party members to max health */
 	public void fullHealParty() {
-		for (CharacterBase character: this.getPartyAsList()) {
-			character.heal(character.getMaxHealth());
+		for (CharacterBase characterb: this.getPartyAsList()) {
+			characterb.heal(characterb.getMaxHealth());
 		}
 	}
 }

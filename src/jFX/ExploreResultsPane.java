@@ -20,6 +20,7 @@ public class ExploreResultsPane extends BorderPane implements Refresh{
 	private Explore explore;
 	
 	public ExploreResultsPane(SceneController sceneController, Player player, Explore explore) {
+		this.setStyle("-fx-background-color: #c5c7a3");
 		this.player = player;
 		this.explore = explore;
 		
@@ -29,16 +30,19 @@ public class ExploreResultsPane extends BorderPane implements Refresh{
 		controlPanel.setAlignment(Pos.CENTER);
 		setCenter(controlPanel);
 		
-		Button tryAgainBtn = new Button("try again");
-		Button backToExplore = new Button("back to set explore");
+		Button tryAgainBtn = new Button("explore agian");
+		Button backToExplore = new Button("make a new expedition.");
+		Button toCollection = new Button("Go to your collection\nand set a new team");
 		
-		controlPanel.getChildren().setAll(tryAgainBtn, backToExplore);
+		controlPanel.getChildren().setAll(tryAgainBtn, backToExplore, toCollection);
 		
 		tryAgainBtn.setOnAction((e) -> {
 			explore.resetFloors();
 			sceneController.setPane("floor");
 		});
 		backToExplore.setOnAction((e) -> sceneController.setPane("set explore"));
+		
+		toCollection.setOnAction(e -> sceneController.setPane("collection"));
 		
 		// display your party
 		VBox partyPanel = new VBox(15);
@@ -51,9 +55,11 @@ public class ExploreResultsPane extends BorderPane implements Refresh{
 
 	@Override
 	public void refresh() {
+		// add party members to party box and give then xp and enemy defeats
+		explore.ditributeXPAndEnemies(player.getPartyAsList());
+
+
 		// get type of result
-		player.fullHealParty();
-		
 		System.out.print(explore.getCurrentFloorDifficualty() + " " + explore.getMaxDifficulty());
 		if (explore.getCurrentFloorDifficualty() == CharacterBase.MAX_LEVEL)
 			resultTitleText.setText("You completed the hardest Difficulty!\nThank you for playing.");
@@ -72,10 +78,11 @@ public class ExploreResultsPane extends BorderPane implements Refresh{
 		else
 			resultTitleText.setText("A tacticle retreat!\nMight have lost some stuff but it is better safe than sorry.");
 		
+
+		player.fullHealParty();
+		
 		partyBox.getChildren().clear();
 		for (CharacterBase character: player.getPartyAsList()) {
-			explore.setDamageDealt(0);
-			explore.setDefeatedEnemeis(0);
 			
 			String name = character.getName();
 			int max_length = (name.length() < 6) ? name.length() : 6;

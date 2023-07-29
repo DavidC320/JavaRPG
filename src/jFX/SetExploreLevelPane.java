@@ -5,7 +5,6 @@ import rpgElements.CharacterBase;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 /*
@@ -13,7 +12,7 @@ import javafx.scene.layout.HBox;
  * 7/22/2023
  * */
 
-public class SetExploreLevelPane extends BorderPane implements Refresh{
+public class SetExploreLevelPane extends JRPGFXPane implements Refresh{
 	private Label currentSelectionTxt = new Label("");
 	private int currentDifficulty = 1;
 	private HBox partyBox = new HBox(15);
@@ -23,12 +22,9 @@ public class SetExploreLevelPane extends BorderPane implements Refresh{
 	private final int DIFFICULTY_STEP = 10;
 	
 	public SetExploreLevelPane(SceneController sceneController, Player player, Explore explore) {
+		super(sceneController, "set Your expedition", (e) -> sceneController.setPane("main menu"));
 		this.player = player;
 		this.explore = explore;
-		Button backBtn = new Button("back");
-		backBtn.setOnAction((e) -> sceneController.setPane("main menu"));
-		BorderPane.setAlignment(backBtn, Pos.TOP_LEFT);
-		setTop(backBtn);
 		
 		VBox explorePanel = new VBox(15);
 		explorePanel.setAlignment(Pos.CENTER);
@@ -61,6 +57,7 @@ public class SetExploreLevelPane extends BorderPane implements Refresh{
 			currentSelectionTxt.setText(String.format("%d - %d", currentDifficulty, currentDifficulty + 9));
 		});
 		startExplore.setOnAction((e) -> {
+			player.fullHealParty();
 			explore.setExploreDifficulty(currentDifficulty - 1);
 			explore.resetFloors();
 			sceneController.setPane("floor");

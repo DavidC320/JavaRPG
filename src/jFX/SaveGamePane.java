@@ -1,28 +1,22 @@
 package jFX;
 import rpgElements.Player;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 /*
  * David cruz 
  * 7/22/2023
  * */
 
-public class SaveGamePane extends BorderPane implements Refresh{
+public class SaveGamePane extends JRPGFXPane implements Refresh{
 	private TextField saveGameName = new TextField();
 	private Label results = new Label("");
 	private Player player;
 	
 	public SaveGamePane(SceneController sceneController, Player player) {
+		super(sceneController, "Save Game", e-> sceneController.setPane("main menu"));
 		this.player = player;
-		// Buttons
-		Button backBtn = new Button("back");
-		backBtn.setOnAction((e) -> sceneController.setPane("main menu"));
-		BorderPane.setAlignment(backBtn, Pos.TOP_LEFT);
-		setTop(backBtn);
 		
 		// main body
 		VBox saveDataControls = new VBox();

@@ -20,6 +20,7 @@ public class CombatResultsPane extends BorderPane implements Refresh {
 	private Explore explore;
 	
 	public CombatResultsPane(SceneController sceneController, Player player, Explore explore) {
+		this.setStyle("-fx-background-color: #c5c7a3");
 		this.player = player;
 		this.explore = explore;
 		
@@ -47,19 +48,15 @@ public class CombatResultsPane extends BorderPane implements Refresh {
 	public void refresh() {
 		player.fullHealParty();
 		
-		// add party members to party box and give then xp and enemy defeats
-		int expericeFound = explore.getDamageDealt() / 2;
+		int expericeFound = (int) Math.ceil(explore.getDamageDealt() / 2 / player.getPartyAsList().size());
 		int enemiesDefeated = explore.getEnemiesDefeated();
-		infoText.setText(String.format("Experience gained: %d\nDefeated Enemies: %d", expericeFound, enemiesDefeated));
-		explore.setDamageDealt(0);
-		explore.setDefeatedEnemeis(0);
+		infoText.setText(String.format("You made it to floor %d\nEach Member gains\nExperience: %d\nDefeated Enemies: %d", explore.getCurrentFloorDifficualty(), expericeFound, enemiesDefeated));
+		
+		// add party members to party box and give then xp and enemy defeats
+		explore.ditributeXPAndEnemies(player.getPartyAsList());
 		
 		partyBox.getChildren().clear();
 		for (CharacterBase character: player.getPartyAsList()) {
-			// give then xp and defeated enemies
-			character.addDefeatedEnemies(enemiesDefeated);
-			character.addExperience(expericeFound);
-			
 			String name = character.getName();
 			int max_length = (name.length() < 6) ? name.length() : 6;
 			Label characterLabel = new Label(String.format("%c\n%s\nLV %d: %d / %d\nRK %d: %d / %d", 

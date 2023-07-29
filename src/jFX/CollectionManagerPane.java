@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
  * 7/22/2023
  * */
 
-public class CollectionManagerPane extends BorderPane implements Refresh{
+public class CollectionManagerPane extends JRPGFXPane implements Refresh{
 	private VBox characterColumnVBox = new VBox(15);
 	private Label currentPageTxt = new Label("");
 	
@@ -34,10 +34,15 @@ public class CollectionManagerPane extends BorderPane implements Refresh{
 	private Player player;
 	
 	public CollectionManagerPane(SceneController sceneController, Player player) {
+		super(sceneController, "Collection", (e) -> sceneController.setPane("main menu"));
+		
+		BorderPane masterPane = new BorderPane();
+		setCenter(masterPane);
+		
 		this.player = player;
 		// clicking characters panel
 		BorderPane controlPanel = new BorderPane();
-		setLeft(controlPanel);
+		masterPane.setLeft(controlPanel);
 		
 		characterColumnVBox.setAlignment(Pos.TOP_LEFT);
 		characterColumnVBox.setPadding(new Insets(5, 0, 5, 0));
@@ -46,6 +51,7 @@ public class CollectionManagerPane extends BorderPane implements Refresh{
 		
 		// page controls
 		BorderPane pageControls = new BorderPane();
+		pageControls.setStyle("-fx-background-color: #d7d9ca");
 		controlPanel.setTop(pageControls);
 		
 		Button lastPage = new Button("<");
@@ -63,12 +69,14 @@ public class CollectionManagerPane extends BorderPane implements Refresh{
 		
 		// display more data on selected character.
 		BorderPane characterPanel = new BorderPane();
+		characterPanel.setStyle("-fx-background-color: #d4d9ad");
 		BorderPane.setAlignment(selectedCharacterTxt, Pos.TOP_LEFT);
 		characterPanel.setLeft(selectedCharacterTxt);
-		setRight(characterPanel);
+		masterPane.setRight(characterPanel);
 		
 		// party changing
 		GridPane partyControls = new GridPane();
+		partyControls.setStyle("-fx-background-color: #d7d9ca");
 		partyControls.add(new Label("Party Manager"), 0, 0);
 		partyControls.add(selectedPartyTxt, 0, 1);
 		
@@ -76,11 +84,7 @@ public class CollectionManagerPane extends BorderPane implements Refresh{
 		HBox partyButtons = new HBox(15);
 		partyButtons.getChildren().addAll(partyButtonArray);
 		partyControls.add(partyButtons, 0, 2);
-		Button backBtn = new Button("Back");
-		partyControls.add(backBtn, 0, 3);
 		controlPanel.setBottom(partyControls);
-		
-		backBtn.setOnAction((e) -> sceneController.setPane("main menu"));
 		
 	}
 

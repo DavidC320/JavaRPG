@@ -5,7 +5,6 @@ import rpgElements.CharacterBase;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 /*
@@ -13,7 +12,7 @@ import javafx.scene.layout.HBox;
  * 7/22/2023
  * */
 
-public class ExploreFloorPane extends BorderPane implements Refresh{
+public class ExploreFloorPane extends JRPGFXPane implements Refresh{
 	private Label currentFloorText = new Label("");
 	private HBox partyBox = new HBox(15);
 	private Player player;
@@ -21,13 +20,10 @@ public class ExploreFloorPane extends BorderPane implements Refresh{
 	private SceneController sceneController;
 	
 	public ExploreFloorPane(SceneController sceneController, Player player, Explore explore) {
+		super(sceneController, "Explore Floor", "End Expedition");
 		this.sceneController = sceneController;
 		this.player = player;
 		this.explore = explore;
-		Button backBtn = new Button("back");
-		backBtn.setOnAction((e) -> sceneController.setPane("explore results"));
-		BorderPane.setAlignment(backBtn, Pos.TOP_LEFT);
-		setTop(backBtn);
 		
 		// show current floor and controls
 		VBox floorPanel = new VBox(15);
