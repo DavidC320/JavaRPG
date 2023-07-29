@@ -10,3 +10,4 @@ To play locate the JavaRPG.java file in src/(default package) or in src
 
 ![Screenshot 2023-07-29 193101](https://github.com/DavidC320/JavaRPG/assets/92796937/8df30999-7f1a-4fcf-8b71-60a8ad87a5de)
 ![Screenshot 2023-07-29 193127](https://github.com/DavidC320/JavaRPG/assets/92796937/2b5467bc-1621-4f8f-b065-3dd45eb1336f)
+![Screenshot 2023-07-29 193148](https://github.com/DavidC320/JavaRPG/assets/92796937/8e2cebe8-638c-4e62-9db9-8e348f5a45b3)
